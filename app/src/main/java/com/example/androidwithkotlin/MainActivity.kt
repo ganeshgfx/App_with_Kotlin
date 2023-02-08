@@ -32,13 +32,20 @@ class MainActivity : AppCompatActivity() {
 
             //Coroutines
             CoroutineScope(Dispatchers.IO).launch{
-                Log.d(TAG, "CoroutineScope - ${Thread.currentThread().name}")
+               // Log.d(TAG, "CoroutineScope - ${Thread.currentThread().name}")
             }
             GlobalScope.launch(Dispatchers.Main) {
-                Log.d(TAG, "GlobalScope - ${Thread.currentThread().name}")
+                // Log.d(TAG, "GlobalScope - ${Thread.currentThread().name}")
             }
             MainScope().launch(Dispatchers.Default) {
-                Log.d(TAG, "MainScope - ${Thread.currentThread().name}")
+               // Log.d(TAG, "MainScope - ${Thread.currentThread().name}")
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                task1()
+            }
+            CoroutineScope(Dispatchers.Main).launch {
+                task2()
             }
             setCount()
 
@@ -53,5 +60,17 @@ class MainActivity : AppCompatActivity() {
     }
     fun setCount(){
         text.text = mainViewModel.count.toString()
+    }
+
+    //Coroutine Suspension
+    suspend fun task1(){
+        Log.d(TAG, "Task1: Started")
+        yield()
+        Log.d(TAG, "Task1: Stopped")
+    }
+    suspend fun task2(){
+        Log.d(TAG, "task2: Started")
+        yield()
+        Log.d(TAG, "task2: Stopped")
     }
 }
