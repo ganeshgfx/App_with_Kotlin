@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.androidwithkotlin.ViewModel.MainActivityViewModelFactory
 import com.example.viewmodelwithkotlin.MainActivityViewModel
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -84,6 +85,12 @@ class MainActivity : AppCompatActivity() {
             true
         }
         setCount()
+
+        //lifecycle Scope
+        lifecycleScope.launch(){
+            delay(5000)
+            //finish()
+        }
     }
 
     //coroutine j0b
