@@ -1,5 +1,6 @@
 package com.example.androidwithkotlin
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -20,15 +21,24 @@ class MainActivity : AppCompatActivity() {
     //View Model Object
     lateinit var mainViewModel: MainActivityViewModel
 
+    @OptIn(DelicateCoroutinesApi::class)
+    @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.hide()
 
-        mainViewModel = ViewModelProvider(this, MainActivityViewModelFactory(9)).get(MainActivityViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, MainActivityViewModelFactory(0)).get(MainActivityViewModel::class.java)
 
         button = findViewById(R.id.incrementBTN)
         button.setOnClickListener {
-            mainViewModel.increaseCount()
+
+
+
+            MainScope().launch(Dispatchers.Default){
+                // Log.d(TAG, "CoroutineScope - ${Thread.currentThread().name}")
+
+            }
 
             //Coroutines
             CoroutineScope(Dispatchers.IO).launch{
@@ -36,9 +46,11 @@ class MainActivity : AppCompatActivity() {
             }
             GlobalScope.launch(Dispatchers.Main) {
                 // Log.d(TAG, "GlobalScope - ${Thread.currentThread().name}")
+               loading()
             }
             MainScope().launch(Dispatchers.Default) {
                // Log.d(TAG, "MainScope - ${Thread.currentThread().name}")
+
             }
 
             CoroutineScope(Dispatchers.Main).launch {
@@ -47,7 +59,6 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.Main).launch {
                 task2()
             }
-            setCount()
 
         }
         button.setOnLongClickListener{
@@ -59,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         setCount()
     }
     fun setCount(){
-        text.text = mainViewModel.count.toString()
+            text.text = "Downloading... ${mainViewModel.count.toString()}"
     }
 
     //Coroutine Suspension
@@ -72,5 +83,15 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "task2: Started")
         yield()
         Log.d(TAG, "task2: Stopped")
+    }
+    suspend fun loading(){
+        mainViewModel.reset()
+        for (i in 1..100){
+            val timeMillis = (10..50).random().toLong()
+            //Log.d(TAG, timeMillis.toString())
+            delay(timeMillis)
+            mainViewModel.increaseCount()
+            setCount()
+        }
     }
 }
