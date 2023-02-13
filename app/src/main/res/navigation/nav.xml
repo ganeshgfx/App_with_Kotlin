@@ -29,6 +29,8 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_login_to_home2"
-            app:destination="@id/home2" />
+            app:destination="@id/home2"
+            app:popUpTo="@id/blank"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
