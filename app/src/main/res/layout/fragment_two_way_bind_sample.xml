@@ -20,6 +20,13 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             >
+            <ImageView
+                android:layout_width="300dp"
+                android:src="@android:drawable/presence_online"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                netImage="@{data.url}"
+                android:layout_height="300dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
@@ -32,6 +39,7 @@
                 android:hint="Input Here"
                 android:text="@={data.display}"
                 />
+
         </LinearLayout>
 
     </FrameLayout>

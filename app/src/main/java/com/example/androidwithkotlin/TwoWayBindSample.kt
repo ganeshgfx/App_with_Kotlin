@@ -13,7 +13,6 @@ import com.example.androidwithkotlin.viewModel.SettingData
 
 class TwoWayBindSample : Fragment() {
 
-    lateinit var settings : SettingData
     var _bind : FragmentTwoWayBindSampleBinding?=null
     val bind get() = _bind!!
 
