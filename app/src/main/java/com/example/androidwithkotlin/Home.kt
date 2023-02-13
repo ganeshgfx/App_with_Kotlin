@@ -38,6 +38,10 @@ class Home : Fragment() {
             binding.tv.setText(it.toString())
         }
 
+        binding.goto2WaySample.setOnClickListener {
+            findNavController().navigate(R.id.action_home2_to_twoWayBindSample)
+        }
+
         return binding.root
     }
 

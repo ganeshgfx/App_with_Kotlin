@@ -6,36 +6,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.androidwithkotlin.databinding.FragmentBlankBinding
-import com.example.androidwithkotlin.viewModel.BlankViewModel
+import com.example.androidwithkotlin.databinding.FragmentBlankLayoutBinding
+import com.example.androidwithkotlin.viewModel.BlankViewDataModel
 
 class blank : Fragment() {
 
-    private var _binding : FragmentBlankBinding? = null
+    private var _binding : FragmentBlankLayoutBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var viewModel: BlankViewModel
+    lateinit var viewModel: BlankViewDataModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater,R.layout.fragment_blank,container,false)
 
-//        viewModel = ViewModelProvider(this).get(BlankViewModel::class.java)
+        _binding = DataBindingUtil.inflate(inflater,R.layout.fragment_blank_layout,container,false)
+
+        viewModel = ViewModelProvider(this).get(BlankViewDataModel::class.java)
 
 //        viewModel.liveData.observe(this.viewLifecycleOwner) {
 //            binding.tv.text = it
 //        }
 
+        binding.lifecycleOwner = this
+
         binding.login.setOnClickListener {
             findNavController().navigate(R.id.action_blank_to_login)
         }
 
-//        binding.input.addTextChangedListener{
-//            viewModel.update(it.toString())
-//        }
+
+        binding.data = viewModel
 
         return  binding.root
     }

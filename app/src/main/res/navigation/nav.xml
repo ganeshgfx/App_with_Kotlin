@@ -8,7 +8,7 @@
         android:id="@+id/blank"
         android:name="com.example.androidwithkotlin.blank"
         android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" >
+        tools:layout="@layout/fragment_blank_layout" >
         <action
             android:id="@+id/action_blank_to_login"
             app:destination="@id/login" />
@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_home2_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_home2_to_twoWayBindSample"
+            app:destination="@id/twoWayBindSample" />
     </fragment>
     <fragment
         android:id="@+id/login"
@@ -33,4 +36,9 @@
             app:popUpTo="@id/blank"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/twoWayBindSample"
+        android:name="com.example.androidwithkotlin.TwoWayBindSample"
+        android:label="fragment_two_way_bind_sample"
+        tools:layout="@layout/fragment_two_way_bind_sample" />
 </navigation>

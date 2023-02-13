@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <data>
         <variable
-            name="vm"
-            type="com.example.androidwithkotlin.viewModel.BlankViewModel" />
+            name="data"
+            type="com.example.androidwithkotlin.viewModel.BlankViewDataModel" />
     </data>
 
     <FrameLayout
@@ -32,6 +33,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:hint="With onTextChanged"
+                    android:onTextChanged="@{data.onTextChanged}"
                     android:layout_marginBottom="5dp" />
 
                 <TextView
@@ -40,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="5dp"
-                    android:text="Wellcome Page"
+                    android:text="@{data._liveData}"
                     android:textAlignment="center"
                     android:textSize="25dp" />
 
