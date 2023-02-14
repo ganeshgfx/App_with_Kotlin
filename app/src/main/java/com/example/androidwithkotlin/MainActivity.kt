@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.androidwithkotlin.viewModel.MainActivityViewModelFactory
@@ -34,11 +35,12 @@ class MainActivity : AppCompatActivity() {
 //        supportActionBar?.hide()
         val color = SurfaceColors.SURFACE_2.getColor(this)
         window.statusBarColor = color // Set color of system statusBar same as ActionBar
-        window.navigationBarColor = color // Set color of system navigationBar same as BottomNavigationView
+        window.navigationBarColor =
+            color // Set color of system navigationBar same as BottomNavigationView
 
         mainViewModel = ViewModelProvider(
             this,
-            MainActivityViewModelFactory(0)
+            MainActivityViewModelFactory(MutableLiveData<Int>(1))
         ).get(MainActivityViewModel::class.java)
 
         text = findViewById(R.id.text)
@@ -46,12 +48,9 @@ class MainActivity : AppCompatActivity() {
 
         button = findViewById(R.id.incrementBTN)
         button.setOnClickListener {
-
-
             MainScope().launch(Dispatchers.Default) {
                 // Log.d(TAG, "CoroutineScope - ${Thread.currentThread().name}")
             }
-
             //Coroutines
             CoroutineScope(Dispatchers.IO).launch {
                 // Log.d(TAG, "CoroutineScope - ${Thread.currentThread().name}")
@@ -59,11 +58,9 @@ class MainActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.Main) {
                 // Log.d(TAG, "GlobalScope - ${Thread.currentThread().name}")
                 async { loading() }
-
             }
             MainScope().launch(Dispatchers.Default) {
                 // Log.d(TAG, "MainScope - ${Thread.currentThread().name}")
-
             }
             CoroutineScope(Dispatchers.Main).launch {
                 task1()
@@ -71,18 +68,16 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.Main).launch {
                 task2()
             }
-
             //jobs
             CoroutineScope(Dispatchers.IO).launch {
                 printFileSize2()
             }
             //async wait
-            CoroutineScope(Dispatchers.Main).launch{
-                var size = async{ getFileSize() }
+            CoroutineScope(Dispatchers.Main).launch {
+                var size = async { getFileSize() }
                 var time = async { getTime() }
                 textSpeed.setText("${size.await()}GB - ${time.await()}s")
             }
-
         }
         button.setOnLongClickListener {
             mainViewModel.decrement()
@@ -90,18 +85,27 @@ class MainActivity : AppCompatActivity() {
             true
         }
         setCount()
-
         //lifecycle Scope
-        lifecycleScope.launch(){
+        lifecycleScope.launch() {
             delay(5000)
             //finish()
         }
-
         navButton = findViewById(R.id.openNav)
         navButton.setOnClickListener {
-            startActivity(Intent(this,NavigationActivity::class.java))
+            startActivity(Intent(this, NavigationActivity::class.java))
             finish()
         }
+
+
+        //updating ui with live data
+        mainViewModel.count.observe(this) {
+            setCount()
+        }
+
+        findViewById<ExtendedFloatingActionButton>(R.id.roomButton)
+            .setOnClickListener {
+                startActivity(Intent(this, MainActivityRoom::class.java))
+            }
     }
 
     //coroutine j0b
@@ -112,19 +116,20 @@ class MainActivity : AppCompatActivity() {
         }
         job.join()
         //Toast.makeText(this, "File size is $fileSize GB", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "printFileSize: $fileSize GB")
+        //Log.d(TAG, "printFileSize: $fileSize GB")
     }
+
     //async
     private suspend fun printFileSize2() {
         var job = CoroutineScope(Dispatchers.IO).async {
             getFileSize()
         }
         //Toast.makeText(this, "File size is $fileSize GB", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "printFileSize: ${job.await()} GB")
+       // Log.d(TAG, "printFileSize: ${job.await()} GB")
     }
 
     fun setCount() {
-        text.text = "Downloading... ${mainViewModel.count.toString()}"
+        text.text = "Downloading... ${mainViewModel.count.value.toString()}"
     }
 
     //Coroutine Suspension
@@ -148,7 +153,6 @@ class MainActivity : AppCompatActivity() {
             //Log.d(TAG, timeMillis.toString())
             delay(timeMillis)
             mainViewModel.increaseCount()
-            setCount()
         }
     }
 
@@ -157,7 +161,7 @@ class MainActivity : AppCompatActivity() {
         return 19
     }
 
-    suspend fun getTime():Int{
+    suspend fun getTime(): Int {
         val timeMillis = (10..500).random().toLong()
         delay(timeMillis)
         return (1..5).random()

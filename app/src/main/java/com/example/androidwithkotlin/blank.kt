@@ -37,7 +37,6 @@ class blank : Fragment() {
             findNavController().navigate(R.id.action_blank_to_login)
         }
 
-
         binding.data = viewModel
 
         return  binding.root

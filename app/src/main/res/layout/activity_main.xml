@@ -34,6 +34,16 @@
         android:layout_margin="20dp"
         android:contentDescription="Open Navigate"
         android:text="Open Navigation"
+        app:layout_constraintBottom_toTopOf="@+id/roomButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/roomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:contentDescription="Room Database"
+        android:text="Room Database"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
