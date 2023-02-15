@@ -18,4 +18,7 @@ interface ContactDAO {
     @Query("SELECT * FROM contact")
     fun selectContact():LiveData<List<Contact>>
 
+    @Query("SELECT * FROM student")
+    fun selectStudent():LiveData<List<Student>>
+
 }

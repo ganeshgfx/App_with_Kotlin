@@ -29,13 +29,20 @@ class MainActivityRoom : AppCompatActivity() {
 
         database = ContactDatabase.getDatabase(this)
 
-        database.contactDao().selectContact().observe(this){
-            binding.view.text = it.toString()
+        database.contactDao().selectContact().observe(this) {
+
+//            val data = it.map {
+//                with(it) {
+//                    "($id)$name : $phone - $cratedDate\n"
+//                }
+//            }.toString()
+
+            binding.view.text = it.map { it.toString()+"\n" }.toString()
         }
 
         binding.add.setOnClickListener {
             GlobalScope.launch {
-                database.contactDao().insertConatct(Contact(0, "john", "3124124", Date()))
+                database.contactDao().insertConatct(Contact(0, "john", "3124124", Date(),-1))
             }
         }
 
